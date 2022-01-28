@@ -7,9 +7,15 @@
     "dev": "nodemon --exec ts-node src/index.ts"
   },
   "dependencies": {
+    "apollo-server-core": "^3.6.2",
+    "apollo-server-express": "^3.6.2",
+    "class-validator": "^0.13.2",
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
+    "graphql": "^15.3.0",
     "pg": "^8.7.1",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1",
     "typeorm": "^0.2.41"
   },
   "devDependencies": {

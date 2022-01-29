@@ -29,7 +29,8 @@ import { VideoResolver } from "./videos/resolvers/video.resolvers";
 	const schema = await buildSchema({ resolvers: [VideoResolver] })
 	const server = new ApolloServer({
 		schema,
-		plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+		plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+		context: ({ req, res }: any) => ({ req, res })
 	})
 
 	await server.start()

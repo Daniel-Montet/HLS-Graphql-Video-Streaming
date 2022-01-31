@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { Video } from "../entity/video.entity";
-import { GraphQLUpload, Upload } from "graphql-upload";
+import { GraphQLUpload, FileUpload } from "graphql-upload";
 import { createWriteStream } from "fs";
 
 
@@ -17,9 +17,8 @@ export class VideoResolver {
 		return await Video.find();
 	}
 	@Mutation(() => String)
-	async create(@Arg("video", () => GraphQLUpload) { file }: Upload) {
+	async create(@Arg("video", () => GraphQLUpload) { filename, createReadStream }: FileUpload) {
 		// read file and write to storage
-		const { createReadStream, filename } = file!;
 		const url = __dirname + `/videos/${filename}`
 		const uploaded = new Promise(async (resolve, reject) => {
 			createReadStream().pipe(createWriteStream(url))
@@ -30,7 +29,6 @@ export class VideoResolver {
 		if (!uploaded) {
 			return "Error uploading video"
 		}
-
 		// persist url to db
 		const video = await Video.create({ title: filename, url })
 		return video.url;

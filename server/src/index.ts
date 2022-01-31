@@ -6,6 +6,7 @@ import http from 'http';
 import { buildSchema } from "type-graphql";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { VideoResolver } from "./videos/resolvers/video.resolvers";
+import { graphqlUploadExpress } from "graphql-upload";
 
 
 
@@ -34,10 +35,11 @@ import { VideoResolver } from "./videos/resolvers/video.resolvers";
 	})
 
 	await server.start()
+	app.use(graphqlUploadExpress());
 	server.applyMiddleware({ app });
 
 
-	app.get("/", (_, res) => {
+	app.post("/", (_, res) => {
 		res.send("Server up")
 	})
 

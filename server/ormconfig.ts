@@ -8,5 +8,6 @@ module.exports = {
 	"database": "hlsvideo",
 	"uuidExtension": "pgcrypto",
 	"entities": ["src/*/entity/*.ts"],
-	"synchronize": true
+	"synchronize": true,
+	"dropSchema": true
 }

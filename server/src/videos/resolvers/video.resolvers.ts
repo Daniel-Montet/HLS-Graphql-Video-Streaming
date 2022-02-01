@@ -3,6 +3,7 @@ import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { Video } from "../entity/video.entity";
 import { GraphQLUpload, FileUpload } from "graphql-upload";
 import { createWriteStream } from "fs";
+import path from "path";
 
 
 @Resolver()
@@ -19,18 +20,19 @@ export class VideoResolver {
 	@Mutation(() => String)
 	async create(@Arg("video", () => GraphQLUpload) { filename, createReadStream }: FileUpload) {
 		// read file and write to storage
-		const url = __dirname + `/videos/${filename}`
-		const uploaded = new Promise(async (resolve, reject) => {
+		const url = path.join('', 'videos', `${filename}`);
+		const isUploaded = new Promise(async (resolve, reject) => {
 			createReadStream().pipe(createWriteStream(url))
 				.on("finish", () => resolve(true))
 				.on("error", () => reject(false))
 		})
-
-		if (!uploaded) {
+		let result = await isUploaded;
+		if (!result) {
 			return "Error uploading video"
 		}
 		// persist url to db
-		const video = await Video.create({ title: filename, url })
+		let video = await Video.create({ title: filename, url })
+		video.save()
 		return video.url;
 	}
 }

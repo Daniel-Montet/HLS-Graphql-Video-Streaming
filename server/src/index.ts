@@ -34,12 +34,17 @@ import { graphqlUploadExpress } from "graphql-upload";
 		context: ({ req, res }: any) => ({ req, res })
 	})
 
-	await server.start()
+	await server.start();
+
+	//middleware
 	app.use(graphqlUploadExpress());
 	server.applyMiddleware({ app });
 
+	app.use((req, res, next) => {
+		next()
+	})
 
-	app.post("/", (_, res) => {
+	app.get("/", (_, res) => {
 		res.send("Server up")
 	})
 

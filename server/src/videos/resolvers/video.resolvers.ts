@@ -4,6 +4,7 @@ import { Video } from "../entity/video.entity";
 import { GraphQLUpload, FileUpload } from "graphql-upload";
 import { createWriteStream } from "fs";
 import path from "path";
+const ffmpeg = require("fluent-ffmpeg");
 
 
 @Resolver()
@@ -21,6 +22,7 @@ export class VideoResolver {
 	async create(@Arg("video", () => GraphQLUpload) { filename, createReadStream }: FileUpload) {
 		// read file and write to storage
 		const url = path.join('', 'videos', `${filename}`);
+		// ffmpeg(fs.createReadStream('/path/to/file.avi'));
 		const isUploaded = new Promise(async (resolve, reject) => {
 			createReadStream().pipe(createWriteStream(url))
 				.on("finish", () => resolve(true))

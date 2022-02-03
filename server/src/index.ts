@@ -40,9 +40,9 @@ import { graphqlUploadExpress } from "graphql-upload";
 	app.use(graphqlUploadExpress());
 	server.applyMiddleware({ app });
 
-	app.use((req, res, next) => {
-		next()
-	})
+	// app.use((req, res, next) => {
+	// 	next()
+	// })
 
 	app.get("/", (_, res) => {
 		res.send("Server up")
